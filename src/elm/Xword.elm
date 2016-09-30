@@ -32,8 +32,15 @@ type alias Xword =
   }
 
 empty_square = { cell = Empty, bars = empty_bars, num = 0 }
-black_square = { cell = Black, bars = empty_bars, num = 0 }
-letter_square s = { cell = Letter s, bars = empty_bars, num = 0 }
+black_square = { empty_square | cell = Black }
+letter_square s = { empty_square | cell = Letter s }
+
+make_xword : { rows : Int, cols : Int } -> Xword
+make_xword sz =
+  let grid = Array2D.repeat sz.cols sz.rows empty_square
+  in
+      { rows = sz.rows, cols = sz.cols, grid = grid }
+      |> renumber
 
 -- grid accessors --
 

@@ -10,22 +10,30 @@ body {
     stroke: rgb(0,0,0);
 }
 
+.crosspadGrid {
+    fill: rgb(255,255,255);
+    stroke-width: 1;
+    stroke: rgb(0,0,0);
+}
+
 .crosspadBlack {
     fill: rgb(0,0,0);
+    fill-opacity: 1;
 }
 
 .crosspadWhite {
     fill: rgb(255,255,255);
+    fill-opacity: 0;
 }
 
 .crosspadCursorBlack {
     fill: rgb(0,0,128);
-    fill-opacity: 1;
+    fill-opacity: 0.5;
 }
 
 .crosspadCursorWhite {
     fill: rgb(128,128,255);
-    fill-opacity: 1;
+    fill-opacity: 0.5;
 }
 
 .crosspadNumber {
@@ -36,4 +44,5 @@ body {
 .crosspadLetter {
     font-family: arial;
     font-size: 1rem;
+    text-anchor: middle;
 }
