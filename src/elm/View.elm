@@ -2,17 +2,18 @@ module View exposing (view)
 
 import Model exposing (..)
 
-import Html exposing (Html, div, span, form, fieldset, input, label)
-import Html.Attributes as Html exposing (name, type', id)
+import Html exposing (Html, div, span, form, fieldset, input, label, button)
+import Html.Attributes as Html exposing (name, class, type', id)
 import Html.Events exposing (onClick)
-import Svg.Attributes as Svg exposing (version, height, width, x, y, r, cx, cy, style)
+import Svg.Attributes as Svg exposing (version, height, width, transform,
+  x, y, r, cx, cy, style)
 import Svg exposing (Svg, circle, rect, svg, g, line, text, text')
 
 import Xword exposing (..)
 
 -- GRID --
 
-top_left = { x = 20, y = 20 }
+top_left = { x = 0, y = 0 }
 
 square_size = 32
 
@@ -79,29 +80,35 @@ svg_grid model =
       y0' = toString top_left.y
       svg_h = toString (h + 20) ++ "px"
       svg_w = toString (w + 20) ++ "px"
+      box = rect [Svg.class grid_style, x x0', y y0', width w', height h'] []
   in
       svg
-        [ version "1.1", x "0", y "0", height svg_h, width svg_w ] (
-          [ rect [ Svg.class grid_style, x x0', y y0', width w', height h'] []
-          ] ++ cells model)
+        [ version "1.1", x "0", y "0", height svg_h, width svg_w ]
+        [ g [transform "translate(0.5, 0.5)"]
+            ( [box] ++ cells model )
+        ]
 
 -- SETTINGS --
 
-radio : String -> msg -> Html msg
-radio value msg =
-  label []
-    [ input [ type' "radio", name "font-size", onClick msg ] []
-    , Html.text value
-    ]
+setting : Model -> String -> Symmetry -> Html Msg
+setting model value sym =
+  let c = if model.symmetry == sym then "pure-button-active" else ""
+      css = "pure-button " ++ c
+  in
+    button [ class css, style "margin:2px", onClick (SetSymmetry sym) ]
+      [Html.text value]
 
-grid_settings : Html Msg
-grid_settings =
-  fieldset [Html.style [("float", "left")]]
-    [ radio "None" (SetSymmetry SymmNone)
-    , radio "180" (SetSymmetry Symm180)
-    , radio "90" (SetSymmetry Symm90)
-    , radio "Locked" (SetSymmetry GridLocked)
-    ]
+grid_settings : Model -> Html Msg
+grid_settings model =
+  let btn = setting model
+  in
+   div [style "display:inline"]
+      [ label [class "pure-label"] [Html.text "Symmetry: "]
+      , btn "None" SymmNone
+      , btn "180" Symm180
+      , btn "90" Symm90
+      , btn "Locked" GridLocked
+      ]
 
 status_bar : Model -> Html Msg
 status_bar model =
@@ -110,8 +117,8 @@ status_bar model =
           Across -> "Across"
           Down -> "Down"
   in
-      fieldset [Html.style [("float", "left")]]
-        [ label [ Html.style [("padding", "10px")] ]
+      div [style "display:inline", height "100%"]
+        [ label [ class "pure-label",  style "margin:4px;display:inline;background-color:rgb(192,255,192)"  ]
             [ Html.text dir]
         ]
 
@@ -122,11 +129,13 @@ view : Model -> Html Msg
 view model =
   let g = svg_grid model
       sb = status_bar model
+      set_sym = grid_settings model
   in
       div []
-        [ g
-        , div []
-          [ grid_settings
-          , sb
-          ]
+        [ div [class "pure-g"]
+            [ div [class "crosspadGridContainer pure-u-1-2"] [g] ]
+        , div [class "pure-g"]
+            [ div [class "pure-u-1-2", style "display:inline;background-color:rgb(255,255,192)"]
+                [set_sym, sb]
+            ]
         ]

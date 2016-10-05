@@ -4,9 +4,10 @@ import Css exposing (..)
 import Css.Elements exposing (body, li)
 import Css.Namespace exposing (namespace)
 
-type CssClasses =
-  Grid | Square | Black | White | CursorBlack | CursorWhite
-    | Number | Letter
+type CssClasses = GridContainer | Grid
+  | Square | Black | White | CursorBlack | CursorWhite
+  | Number | Letter
+  | SettingsRadio
 
 str = toString
 
@@ -33,21 +34,27 @@ css =
         [ margin zero
         , padding zero
         , property "stroke-width" "1"
-        , property "stroke" (rgb' 0 0 0)
+        , property "stroke" (rgb' 128 128 128)
         ]
     , (.) Grid
         [ property "fill" (rgb' 255 255 255)
         , property "stroke-width" "1"
-        , property "stroke" (rgb' 0 0 0)
+        , property "stroke" (rgb' 128 128 128)
+        ]
+    , (.) GridContainer
+        [ padding zero
+        , borderColor (rgba 0 0 0 0.5)
+        , border (px 2)
         ]
     , (.) Black (fill (rgb 0 0 0) 1)
     , (.) White (fill (rgb 255 255 255) 0)
     , (.) CursorBlack (fill (rgb 0 0 128) 0.5)
     , (.) CursorWhite (fill (rgb 128 128 255) 0.5)
-    , (.) Number [ arial, fontSize (rem 0.625) ]
+    , (.) Number [ arial, letterSpacing zero, fontSize (rem 0.625) ]
     , (.) Letter
         [ arial
         , fontSize (rem 1.0)
         , property "text-anchor" "middle"
         ]
+    , (.) SettingsRadio [ padding (px 4) ]
     ]

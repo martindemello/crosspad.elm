@@ -7,13 +7,19 @@ body {
     margin: 0;
     padding: 0;
     stroke-width: 1;
-    stroke: rgb(0,0,0);
+    stroke: rgb(128,128,128);
 }
 
 .crosspadGrid {
     fill: rgb(255,255,255);
     stroke-width: 1;
-    stroke: rgb(0,0,0);
+    stroke: rgb(128,128,128);
+}
+
+.crosspadGridContainer {
+    padding: 0;
+    border-color: rgba(0, 0, 0, 0.5);
+    border: 2px;
 }
 
 .crosspadBlack {
@@ -38,6 +44,7 @@ body {
 
 .crosspadNumber {
     font-family: arial;
+    letter-spacing: 0;
     font-size: 0.625rem;
 }
 
@@ -45,4 +52,8 @@ body {
     font-family: arial;
     font-size: 1rem;
     text-anchor: middle;
+}
+
+.crosspadSettingsRadio {
+    padding: 4px;
 }
