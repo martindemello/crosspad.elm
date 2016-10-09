@@ -7,7 +7,8 @@ import Css.Namespace exposing (namespace)
 type CssClasses = GridContainer | Grid
   | Square | Black | White | CursorBlack | CursorWhite
   | Number | Letter
-  | SettingsRadio
+  | SettingsButtonActive | SettingsButtonInactive
+  | StatusLabel
 
 str = toString
 
@@ -56,5 +57,30 @@ css =
         , fontSize (rem 1.0)
         , property "text-anchor" "middle"
         ]
-    , (.) SettingsRadio [ padding (px 4) ]
+    , (.) SettingsButtonActive
+        [ padding (px 2)
+        , margin (px 2)
+        , border (px 2)
+        , borderStyle solid
+        , borderColor (rgb 61 146 201)
+        , backgroundColor (rgba 61 146 201 0.8)
+        ]
+    , (.) SettingsButtonInactive
+        [ padding (px 2)
+        , margin (px 2)
+        , border (px 2)
+        , borderStyle solid
+        , borderColor (rgb 61 146 201)
+        , backgroundColor (rgba 61 146 201 0.1)
+        ]
+    , (.) StatusLabel
+        [ margin (px 2)
+        , padding (px 2)
+        , display inline
+        , border (px 2)
+        , borderStyle solid
+        , borderColor (rgb 61 146 201)
+        , backgroundColor (rgba 192 255 192 1)
+        ]
+
     ]

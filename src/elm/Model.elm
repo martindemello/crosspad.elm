@@ -29,6 +29,7 @@ type Msg =
   | KeyPress Char
   | KeyDown Key
   | SetSymmetry Symmetry
+  | ToggleDirection
 
 is_current_black model =
   is_black model.cur_x model.cur_y model.xw.grid
@@ -134,11 +135,15 @@ handle_keypress c model =
 handle_symm symm model =
   { model | symmetry = symm }
 
+update_model: Msg -> Model -> Model
+update_model msg model =
+  case msg of
+    ClickSquare x y -> { model | cur_x = x, cur_y = y }
+    KeyDown k -> handle_keycode k model
+    KeyPress c -> handle_keypress c model
+    SetSymmetry s -> handle_symm s model
+    ToggleDirection -> toggle_dir model
+
 update: Msg -> Model -> (Model, Cmd Msg)
 update msg model =
-  case msg of
-    ClickSquare x y -> ({ model | cur_x = x, cur_y = y }, Cmd.none)
-    KeyDown k -> (handle_keycode k model, Cmd.none)
-    KeyPress c -> (handle_keypress c model, Cmd.none)
-    SetSymmetry s -> (handle_symm s model, Cmd.none)
-
+  (update_model msg model, Cmd.none)

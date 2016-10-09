@@ -54,6 +54,30 @@ body {
     text-anchor: middle;
 }
 
-.crosspadSettingsRadio {
-    padding: 4px;
+.crosspadSettingsButtonActive {
+    padding: 2px;
+    margin: 2px;
+    border: 2px;
+    border-style: solid;
+    border-color: rgb(61, 146, 201);
+    background-color: rgba(61, 146, 201, 0.8);
+}
+
+.crosspadSettingsButtonInactive {
+    padding: 2px;
+    margin: 2px;
+    border: 2px;
+    border-style: solid;
+    border-color: rgb(61, 146, 201);
+    background-color: rgba(61, 146, 201, 0.1);
+}
+
+.crosspadStatusLabel {
+    margin: 2px;
+    padding: 2px;
+    display: inline;
+    border: 2px;
+    border-style: solid;
+    border-color: rgb(61, 146, 201);
+    background-color: rgba(192, 255, 192, 1);
 }
