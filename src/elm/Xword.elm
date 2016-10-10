@@ -35,7 +35,7 @@ empty_square = { cell = Empty, bars = empty_bars, num = 0 }
 black_square = { empty_square | cell = Black }
 letter_square s = { empty_square | cell = Letter s }
 
-make_xword : { rows : Int, cols : Int } -> Xword
+make_xword : { a | rows : Int, cols : Int } -> Xword
 make_xword sz =
   let grid = Array2D.repeat sz.cols sz.rows empty_square
   in
