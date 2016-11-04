@@ -41,8 +41,8 @@ advance cursor =
 retreat : Cursor -> Cursor
 retreat cursor =
   case cursor.dir of
-    Across -> move 1 0 cursor
-    Down -> move 0 1 cursor
+    Across -> move -1 0 cursor
+    Down -> move 0 -1 cursor
 
 set : Int -> Int -> Cursor -> Cursor
 set x' y' cursor =
