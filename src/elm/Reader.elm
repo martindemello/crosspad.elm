@@ -4,7 +4,6 @@ import Json.Decode.Extra exposing (..)
 import Xword exposing (..)
 import Model exposing (..)
 
-
 type alias InCell =
   { x : Int
   , y : Int
@@ -15,6 +14,8 @@ type alias InXword =
   { rows : Int
   , cols : Int
   , cells : List InCell
+  , across : List String
+  , down : List String
   }
 
 cell_decoder : Decoder InCell
@@ -30,7 +31,8 @@ xword_decoder =
     |: ("cols" := int)
     |: ("rows" := int)
     |: ("cells" := list cell_decoder)
-
+    |: ("across" := list string)
+    |: ("down" := list string)
 
 to_square : String -> Square
 to_square s =
@@ -47,5 +49,5 @@ to_xword input =
         xword.grid
         input.cells
   in
-      { xword | grid = grid' }
+      { xword | grid = grid', across = input.across, down = input.down }
 
