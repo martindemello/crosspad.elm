@@ -27,7 +27,7 @@ square_style = "crosspadSquare"
 cellstyle : Int -> Int -> Model -> String
 cellstyle x y model =
   let cell = get_cell x y model.xw.grid
-      is_cur = model.cur_x == x && model.cur_y == y
+      is_cur = model.cursor.x == x && model.cursor.y == y
   in
       case (cell, is_cur) of
         (Black, False) -> black_style

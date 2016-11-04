@@ -8,8 +8,6 @@ import String exposing (..)
 
 type Cell = Black | Empty | Letter String
 
-type Direction = Across | Down
-
 type alias Bars =
   { right : Bool
   , down : Bool

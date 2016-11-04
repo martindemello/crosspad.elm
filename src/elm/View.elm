@@ -1,8 +1,8 @@
 module View exposing (view)
 
 import Model exposing (..)
-import Xword exposing (..)
 import GridView exposing (svg_grid)
+import Types exposing (..)
 
 import Html exposing (
   Html, div, span, form, fieldset, input, label, button, text
@@ -37,7 +37,7 @@ grid_settings model =
 dir_button : Model -> Html Msg
 dir_button model =
   let dir =
-        case model.cur_dir of
+        case model.cursor.dir of
           Across -> "Across"
           Down -> "Down"
       active = "crosspadSettingsButtonActive"
@@ -49,7 +49,7 @@ dir_button model =
 status_bar : Model -> Html Msg
 status_bar model =
   let dir =
-        case model.cur_dir of
+        case model.cursor.dir of
           Across -> "Across"
           Down -> "Down"
   in

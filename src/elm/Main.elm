@@ -7,29 +7,11 @@ import Keycode exposing (..)
 
 import Model exposing (..)
 import View exposing (..)
-import Xword exposing (..)
-
 
 -- INIT --
 
-init_model : Model
-init_model =
-    let w = 15
-        h = 15
-        xw = make_xword { rows = h, cols = w }
-    in
-    { width = w
-    , height = h
-    , xw = xw
-    , cur_x = 0
-    , cur_y = 0
-    , cur_dir = Across
-    , last_key = "None"
-    , symmetry = Symm180
-    }
-
 init : (Model, Cmd Msg)
-init = (init_model, Cmd.none)
+init = (Model.init {rows = 15, cols = 15}, Cmd.none)
 
 -- SUBSCRIPTIONS
 
