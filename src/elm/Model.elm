@@ -39,6 +39,8 @@ type Msg =
   | KeyDown Key
   | SetSymmetry Symmetry
   | ToggleDirection
+  | UploadFile
+  | SaveFile
 
 is_current_black model =
   is_black model.cursor.x model.cursor.y model.xw.grid
@@ -149,6 +151,8 @@ update_model msg model =
     KeyPress c -> handle_keypress c model
     SetSymmetry s -> handle_symm s model
     ToggleDirection -> toggle_dir model
+    UploadFile -> model
+    SaveFile -> model
 
 update: Msg -> Model -> (Model, Cmd Msg)
 update msg model =

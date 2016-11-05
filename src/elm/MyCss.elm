@@ -8,7 +8,8 @@ type CssClasses = GridContainer | Grid
   | Square | Black | White | CursorBlack | CursorWhite
   | Number | Letter
   | SettingsButtonActive | SettingsButtonInactive
-  | StatusLabel
+  | StatusLabel | StatusBarContainer
+  | ToolbarButton
 
 str = toString
 
@@ -21,6 +22,13 @@ fill c alpha =
   [ property "fill" (rgb' c.red c.green c.blue)
   , property "fill-opacity" (str alpha)
   ]
+
+button c = c ++
+        [ padding (px 2)
+        , margin (px 2)
+        , border (px 2)
+        , borderStyle solid
+        ]
 
 -- we don't want the mathematical rem here
 rem = Css.rem
@@ -44,6 +52,7 @@ css =
         ]
     , (.) GridContainer
         [ padding zero
+        , margin (px 10)
         , borderColor (rgba 0 0 0 0.5)
         , border (px 2)
         ]
@@ -58,21 +67,20 @@ css =
         , property "text-anchor" "middle"
         ]
     , (.) SettingsButtonActive
-        [ padding (px 2)
-        , margin (px 2)
-        , border (px 2)
-        , borderStyle solid
-        , borderColor (rgb 61 146 201)
-        , backgroundColor (rgba 61 146 201 0.8)
-        ]
+        (button
+          [ borderColor (rgb 61 146 201)
+          , backgroundColor (rgba 61 146 201 0.8)
+          ])
     , (.) SettingsButtonInactive
-        [ padding (px 2)
-        , margin (px 2)
-        , border (px 2)
-        , borderStyle solid
-        , borderColor (rgb 61 146 201)
+        (button
+        [ borderColor (rgb 61 146 201)
         , backgroundColor (rgba 61 146 201 0.1)
-        ]
+        ])
+    , (.) ToolbarButton
+        (button
+        [ borderColor (rgb 61 146 201)
+        , backgroundColor (rgba 61 146 201 0.1)
+        ])
     , (.) StatusLabel
         [ margin (px 2)
         , padding (px 2)
@@ -81,6 +89,10 @@ css =
         , borderStyle solid
         , borderColor (rgb 61 146 201)
         , backgroundColor (rgba 192 255 192 1)
+        ]
+    , (.) StatusBarContainer
+        [ backgroundColor (rgb 240 240 240)
+        , display inline
         ]
 
     ]

@@ -7,5 +7,6 @@ $ npm start
 
 Editing `MyCss.elm` requires the static css file to be regenerated via
 ````
+$ npm install -g elm-css
 $ elm-css src/elm/Stylesheets.elm -o src/static/styles/
 ````

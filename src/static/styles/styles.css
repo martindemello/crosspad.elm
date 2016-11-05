@@ -18,6 +18,7 @@ body {
 
 .crosspadGridContainer {
     padding: 0;
+    margin: 10px;
     border-color: rgba(0, 0, 0, 0.5);
     border: 2px;
 }
@@ -55,21 +56,30 @@ body {
 }
 
 .crosspadSettingsButtonActive {
+    border-color: rgb(61, 146, 201);
+    background-color: rgba(61, 146, 201, 0.8);
     padding: 2px;
     margin: 2px;
     border: 2px;
     border-style: solid;
-    border-color: rgb(61, 146, 201);
-    background-color: rgba(61, 146, 201, 0.8);
 }
 
 .crosspadSettingsButtonInactive {
+    border-color: rgb(61, 146, 201);
+    background-color: rgba(61, 146, 201, 0.1);
     padding: 2px;
     margin: 2px;
     border: 2px;
     border-style: solid;
+}
+
+.crosspadToolbarButton {
     border-color: rgb(61, 146, 201);
-    background-color: rgba(61, 146, 201, 0.1);
+    background-color: rgba(200, 61, 61, 0.1);
+    padding: 2px;
+    margin: 2px;
+    border: 2px;
+    border-style: solid;
 }
 
 .crosspadStatusLabel {
@@ -80,4 +90,9 @@ body {
     border-style: solid;
     border-color: rgb(61, 146, 201);
     background-color: rgba(192, 255, 192, 1);
+}
+
+.crosspadStatusBarContainer {
+    background-color: rgb(240, 240, 240);
+    display: inline;
 }
