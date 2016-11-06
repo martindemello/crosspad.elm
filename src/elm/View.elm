@@ -56,7 +56,7 @@ status_bar model =
 toolbar : Model -> Html Msg
 toolbar model =
   let btn txt action =
-        button [class "pure-button crosspadToolbarButton", onClick action]
+        Html.a [class "pure-button crosspadToolbarButton", onClick action]
         [text txt]
   in
   div [style [("display", "inline")]]
