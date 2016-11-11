@@ -33,15 +33,6 @@ init dims =
 
 -- UPDATE --
 
-type Msg =
-  ClickSquare Int Int
-  | KeyPress Char
-  | KeyDown Key
-  | SetSymmetry Symmetry
-  | ToggleDirection
-  | UploadFile
-  | SaveFile
-
 is_current_black model =
   is_black model.cursor.x model.cursor.y model.xw.grid
 
@@ -142,18 +133,3 @@ handle_keypress c model =
 
 handle_symm symm model =
   { model | symmetry = symm }
-
-update_model: Msg -> Model -> Model
-update_model msg model =
-  case msg of
-    ClickSquare x y -> set_cursor x y model
-    KeyDown k -> handle_keycode k model
-    KeyPress c -> handle_keypress c model
-    SetSymmetry s -> handle_symm s model
-    ToggleDirection -> toggle_dir model
-    UploadFile -> model
-    SaveFile -> model
-
-update: Msg -> Model -> (Model, Cmd Msg)
-update msg model =
-  (update_model msg model, Cmd.none)

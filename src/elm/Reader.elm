@@ -1,8 +1,9 @@
+module Reader exposing (..)
+
 import Json.Decode exposing (..)
 import Json.Decode.Extra exposing (..)
 
 import Xword exposing (..)
-import Model exposing (..)
 
 type alias InCell =
   { x : Int
@@ -51,3 +52,7 @@ to_xword input =
   in
       { xword | grid = grid', across = input.across, down = input.down }
 
+decode : Value -> Result String Xword
+decode json =
+  decodeValue xword_decoder json
+    |> Result.map to_xword

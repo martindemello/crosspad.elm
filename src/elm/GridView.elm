@@ -1,6 +1,7 @@
 module GridView exposing (svg_grid)
 
 import Model exposing (..)
+import Types exposing (..)
 import Xword exposing (..)
 
 import Svg.Attributes exposing (

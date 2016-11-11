@@ -6,6 +6,9 @@ import Keyboard exposing (..)
 import Keycode exposing (..)
 
 import Model exposing (..)
+import Ports
+import Types exposing (..)
+import Update exposing (..)
 import View exposing (..)
 
 -- INIT --
@@ -20,6 +23,7 @@ subscriptions model =
   Sub.batch
     [ Keyboard.presses (\code -> KeyPress (fromCode code))
     , Keyboard.downs (\code -> KeyDown (fromKeyCode code))
+    , Ports.fileContentRead FileUploaded
     ]
 
 

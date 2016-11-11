@@ -63,7 +63,7 @@ toolbar model =
     [
       form [class "pure-form", id "convert-form"] [
         fieldset []
-          [ input [ type' "file" , class "pure-button crosspadToolbarButton"] []
+          [ input [ id "file-upload", type' "file" , class "pure-button crosspadToolbarButton"] []
           , btn "Load" UploadFile
           , div [class "pure-u-1-24"] []
           , btn "Save As" SaveFile
