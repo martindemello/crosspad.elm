@@ -29,6 +29,8 @@ type alias Xword =
   , grid : Grid
   , across : List String
   , down : List String
+  , nums_ac : List Int
+  , nums_dn : List Int
   }
 
 empty_square = { cell = Empty, bars = empty_bars, num = 0 }
@@ -44,6 +46,8 @@ make_xword sz =
       , grid = grid
       , across = []
       , down = []
+      , nums_ac = []
+      , nums_dn = []
       }
       |> renumber
 
@@ -138,8 +142,12 @@ renumber_square x y n xw =
       dn = starts_down x y xw
       num = ac || dn
       n' = if num then n + 1 else n
+      nac = if ac then n' :: xw.nums_ac else xw.nums_ac
+      ndn = if dn then n' :: xw.nums_dn else xw.nums_dn
       xw' = if num then
-        { xw | grid = set_num x y n' xw.grid }
+        { xw | grid = set_num x y n' xw.grid
+        , nums_ac = nac, nums_dn = ndn
+        }
       else
         xw
   in
@@ -152,7 +160,24 @@ renumber xw =
             renumber_square x y n'' xw'')
           (n', xw')
           [0..(xw.rows - 1)])
-        (0, xw)
+        (0, { xw | nums_ac = [], nums_dn = [] })
         [0..(xw.cols - 1)]
   in
-      xw'
+      { xw' | nums_ac = List.reverse xw'.nums_ac
+      , nums_dn = List.reverse xw'.nums_dn
+      }
+
+-- zip the list of clues with the clue numbers, padding
+-- with blank lines if necessary.
+clue_list : Xword -> { across : List String, down : List String }
+clue_list xw =
+  let zip xs ys =
+        let len = List.length in
+        if len ys < len xs then
+          zip xs <| ys ++ (List.repeat (len xs - len ys) "")
+        else
+          List.map2 (\x y -> (toString x) ++ ". " ++ y) xs ys
+  in
+      { across = zip xw.nums_ac xw.across
+      , down = zip xw.nums_dn xw.down
+      }

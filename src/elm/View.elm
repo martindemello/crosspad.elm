@@ -3,12 +3,18 @@ module View exposing (view)
 import Model exposing (..)
 import GridView exposing (svg_grid)
 import Types exposing (..)
+import Xword
 
 import Html exposing (
-  Html, div, span, form, fieldset, input, label, button, text, hr
+  Html, div, span, form, fieldset, input, label, button,
+  text, hr, textarea
   )
 import Html.Events exposing (onClick, onInput)
-import Html.Attributes exposing (name, style, class, type', id)
+import Html.Attributes exposing (
+  name, style, class, type', rows, cols, id, height, width
+  , readonly, value
+  )
+import String
 
 -- SETTINGS --
 
@@ -16,7 +22,7 @@ setting : Model -> String -> Symmetry -> Html Msg
 setting model value sym =
   let active = "crosspadSettingsButtonActive"
       inactive = "crosspadSettingsButtonInactive"
-      c = if model.symmetry == sym then active else inactive 
+      c = if model.symmetry == sym then active else inactive
       css = "pure-button " ++ c
   in
     button [ class css, onClick (SetSymmetry sym) ]
@@ -71,20 +77,46 @@ toolbar model =
       ]
     ]
 
+-- CLUES --
+
+clue_box : Model -> Html Msg
+clue_box model =
+  let
+      lines = String.join "\n"
+      clues = Xword.clue_list model.xw
+      ac = lines clues.across
+      dn = lines clues.down
+      txt str =
+        textarea [cols 65, rows 12, readonly True, value str] []
+      lbl str = label [style [("display", "block")]] [text str]
+
+  in
+  div []
+    [ lbl "Across"
+    , txt ac
+    , lbl "Down"
+    , txt dn
+    ]
+
+
 -- VIEW --
 
 view : Model -> Html Msg
 view model =
   let g = svg_grid model
+      c = clue_box model
       sb = status_bar model
       set_sym = grid_settings model
       tb = toolbar model
       row = div [class "pure-g"]
   in
       div []
-        [ row [ div [class "pure-u-1-2 crosspadStatusBarContainer"] [tb] ]
-        , row [ div [class "pure-u-1-2 crosspadGridContainer"] [g] ]
+        [ row [ div [class "pure-u-2-3 crosspadStatusBarContainer"] [tb] ]
         , row
-            [ div [class "pure-u-1-2 crosspadStatusBarContainer"] [set_sym, sb]
+        [ div [class "pure-u-1-3 crosspadGridContainer"] [g]
+        , div [ class "pure-u-1-3 crosspadGridContainer"] [c]
+        ]
+        , row
+            [ div [class "pure-u-2-3 crosspadStatusBarContainer"] [set_sym, sb]
             ]
         ]

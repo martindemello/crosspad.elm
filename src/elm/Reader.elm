@@ -56,3 +56,4 @@ decode : Value -> Result String Xword
 decode json =
   decodeValue xword_decoder json
     |> Result.map to_xword
+    |> Result.map renumber
