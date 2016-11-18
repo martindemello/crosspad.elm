@@ -169,14 +169,14 @@ renumber xw =
 
 -- zip the list of clues with the clue numbers, padding
 -- with blank lines if necessary.
-clue_list : Xword -> { across : List String, down : List String }
+clue_list : Xword -> { across : List (Int, String), down : List (Int, String) }
 clue_list xw =
   let zip xs ys =
         let len = List.length in
         if len ys < len xs then
           zip xs <| ys ++ (List.repeat (len xs - len ys) "")
         else
-          List.map2 (\x y -> (toString x) ++ ". " ++ y) xs ys
+          List.map2 (,) xs ys
   in
       { across = zip xw.nums_ac xw.across
       , down = zip xw.nums_dn xw.down

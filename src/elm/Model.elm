@@ -17,19 +17,30 @@ type alias Model =
   , xw : Xword
   , cursor : Cursor
   , symmetry : Symmetry
+  , load_format : String
+  , save_format : String
   }
 
 init : { rows : Int, cols : Int } -> Model
 init dims =
   let xw = make_xword dims
       cursor = Cursor.init dims
+      hd xs = List.head xs |> Maybe.withDefault ""
   in
   { width = dims.cols
   , height = dims.rows
   , xw = xw
   , cursor = cursor
   , symmetry = Symm180
+  , load_format = hd load_formats
+  , save_format = hd save_formats
   }
+
+load_formats : List String
+load_formats = ["acrosslite-binary", "acrosslite-text", "reddit-blank", "qxw"]
+
+save_formats : List String
+save_formats = ["acrosslite-binary", "acrosslite-text", "reddit-blank", "reddit-filled"]
 
 -- UPDATE --
 

@@ -5,16 +5,12 @@ import GridView exposing (svg_grid)
 import Types exposing (..)
 import Xword
 
-import Html exposing (
-  Html, div, span, form, fieldset, input, label, button,
-  text, hr, textarea
-  )
+import Html exposing (..)
 import Html.Events exposing (onClick, onInput)
-import Html.Attributes exposing (
-  name, style, class, type', rows, cols, id, height, width
-  , readonly, value
-  )
+import Html.Attributes exposing (..)
 import String
+
+import Kintail.InputWidget as InputWidget
 
 -- SETTINGS --
 
@@ -67,7 +63,7 @@ toolbar model =
   in
   div [style [("display", "inline")]]
     [
-      form [class "pure-form", id "convert-form"] [
+      Html.form [class "pure-form", id "convert-form"] [
         fieldset []
           [ input [ id "file-upload", type' "file" , class "pure-button crosspadToolbarButton"] []
           , btn "Load" UploadFile
@@ -83,9 +79,11 @@ clue_box : Model -> Html Msg
 clue_box model =
   let
       lines = String.join "\n"
+      merge (x, y) = (toString x) ++ ". " ++ y
+      format c = lines <| List.map merge c
       clues = Xword.clue_list model.xw
-      ac = lines clues.across
-      dn = lines clues.down
+      ac = format clues.across
+      dn = format clues.down
       txt str =
         textarea [cols 65, rows 12, readonly True, value str] []
       lbl str = label [style [("display", "block")]] [text str]

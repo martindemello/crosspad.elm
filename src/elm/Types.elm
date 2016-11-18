@@ -18,4 +18,6 @@ type Msg =
   | UploadFile
   | FileUploaded FileReaderPortData
   | SaveFile
+  | LoadFormatChanged String
+  | SaveFormatChanged String
 
