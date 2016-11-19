@@ -2,13 +2,15 @@ module Cursor exposing (..)
 
 import Types exposing (..)
 
+
 type alias Cursor =
-  { x : Int
-  , y : Int
-  , dir : Direction
-  , height : Int
-  , width : Int
-  }
+    { x : Int
+    , y : Int
+    , dir : Direction
+    , height : Int
+    , width : Int
+    }
+
 
 init : { rows : Int, cols : Int } -> Cursor
 init dims =
@@ -19,31 +21,51 @@ init dims =
     , width = dims.rows
     }
 
+
 toggle_dir : Cursor -> Cursor
 toggle_dir cursor =
-  let dir' = if cursor.dir == Across then Down else Across
-  in
-      { cursor | dir = dir' }
+    let
+        dir_ =
+            if cursor.dir == Across then
+                Down
+            else
+                Across
+    in
+        { cursor | dir = dir_ }
+
 
 move : Int -> Int -> Cursor -> Cursor
 move dx dy cursor =
-  let x' = (cursor.x + dx) % cursor.width
-      y' = (cursor.y + dy) % cursor.height
-  in
-      { cursor | x = x', y = y' }
+    let
+        x_ =
+            (cursor.x + dx) % cursor.width
+
+        y_ =
+            (cursor.y + dy) % cursor.height
+    in
+        { cursor | x = x_, y = y_ }
+
 
 advance : Cursor -> Cursor
 advance cursor =
-  case cursor.dir of
-    Across -> move 1 0 cursor
-    Down -> move 0 1 cursor
-  
+    case cursor.dir of
+        Across ->
+            move 1 0 cursor
+
+        Down ->
+            move 0 1 cursor
+
+
 retreat : Cursor -> Cursor
 retreat cursor =
-  case cursor.dir of
-    Across -> move -1 0 cursor
-    Down -> move 0 -1 cursor
+    case cursor.dir of
+        Across ->
+            move -1 0 cursor
+
+        Down ->
+            move 0 -1 cursor
+
 
 set : Int -> Int -> Cursor -> Cursor
-set x' y' cursor =
-  { cursor | x = x', y = y' }
+set x_ y_ cursor =
+    { cursor | x = x_, y = y_ }
