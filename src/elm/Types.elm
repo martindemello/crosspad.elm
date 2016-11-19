@@ -16,10 +16,6 @@ type Direction
     | Down
 
 
-type alias FileReaderPortData =
-    Json.Value
-
-
 type Msg
     = ClickSquare Int Int
     | KeyPress Char
@@ -29,5 +25,18 @@ type Msg
     | UploadFile
     | FileUploaded FileReaderPortData
     | SaveFile
+    | FileConverted String
     | LoadFormatChanged String
     | SaveFormatChanged String
+
+
+type alias FileReaderPortData =
+    Json.Value
+
+
+type alias LoadFileRequest =
+    { file_element : String, format : String }
+
+
+type alias SaveFileRequest =
+    { data : String, format : String }

@@ -47,12 +47,12 @@ init dims =
 
 load_formats : List String
 load_formats =
-    [ "acrosslite-binary", "acrosslite-text", "reddit-blank", "qxw" ]
+    [ "across-lite-binary", "across-lite-text", "reddit-blank", "qxw" ]
 
 
 save_formats : List String
 save_formats =
-    [ "acrosslite-binary", "acrosslite-text", "reddit-blank", "reddit-filled" ]
+    [ "across-lite-binary", "across-lite-text", "reddit-blank", "reddit-filled" ]
 
 
 
@@ -233,3 +233,11 @@ handle_keypress c model =
 
 handle_symm symm model =
     { model | symmetry = symm }
+
+
+handle_load_format_changed fmt model =
+    { model | load_format = fmt }
+
+
+handle_save_format_changed fmt model =
+    { model | save_format = fmt }

@@ -80,6 +80,18 @@ status_bar model =
         ]
 
 
+load_format_selector : Model -> Html Msg
+load_format_selector model =
+    InputWidget.comboBox [] identity Model.load_formats model.load_format
+        |> Html.map LoadFormatChanged
+
+
+save_format_selector : Model -> Html Msg
+save_format_selector model =
+    InputWidget.comboBox [] identity Model.save_formats model.save_format
+        |> Html.map SaveFormatChanged
+
+
 toolbar : Model -> Html Msg
 toolbar model =
     let
@@ -90,10 +102,17 @@ toolbar model =
         div [ style [ ( "display", "inline" ) ] ]
             [ Html.form [ class "pure-form", id "convert-form" ]
                 [ fieldset []
-                    [ input [ id "file-upload", type_ "file", class "pure-button crosspadToolbarButton" ] []
+                    [ text "Load as:"
+                    , load_format_selector model
+                    , input [ id "file-upload", type_ "file", class "pure-button crosspadToolbarButton" ] []
                     , btn "Load" UploadFile
-                    , div [ class "pure-u-1-24" ] []
-                    , btn "Save As" SaveFile
+                    ]
+                , fieldset []
+                    [ text "Convert to:"
+                    , save_format_selector model
+                    , text "Filename:"
+                    , input [ id "file-download" ] []
+                    , btn "Download" SaveFile
                     ]
                 ]
             ]

@@ -29,6 +29,7 @@ subscriptions model =
         [ Keyboard.presses (\code -> KeyPress (fromCode code))
         , Keyboard.downs (\code -> KeyDown (fromKeyCode code))
         , Ports.fileContentRead FileUploaded
+        , Ports.saveFileReturned FileConverted
         ]
 
 
