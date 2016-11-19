@@ -24,19 +24,19 @@ type alias InXword =
 cell_decoder : Decoder InCell
 cell_decoder =
     succeed InCell
-        |: ("x" := int)
-        |: ("y" := int)
-        |: ("contents" := string)
+        |: (field "x" int)
+        |: (field "y" int)
+        |: (field "contents" string)
 
 
 xword_decoder : Decoder InXword
 xword_decoder =
     succeed InXword
-        |: ("cols" := int)
-        |: ("rows" := int)
-        |: ("cells" := list cell_decoder)
-        |: ("across" := list string)
-        |: ("down" := list string)
+        |: (field "cols" int)
+        |: (field "rows" int)
+        |: (field "cells" <| list cell_decoder)
+        |: (field "across" <| list string)
+        |: (field "down" <| list string)
 
 
 to_square : String -> Square

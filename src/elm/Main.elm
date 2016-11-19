@@ -1,7 +1,7 @@
 module Main exposing (..)
 
 import Char exposing (..)
-import Html.App as App
+import Html
 import Keyboard exposing (..)
 import Keycode exposing (..)
 import Model exposing (..)
@@ -36,9 +36,9 @@ subscriptions model =
 -- MAIN --
 
 
-main : Program Never
+main : Program Never Model Msg
 main =
-    App.program
+    Html.program
         { init = init
         , view = view
         , update = update

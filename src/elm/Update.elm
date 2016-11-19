@@ -48,6 +48,11 @@ update_model msg model =
         SaveFile ->
             model
 
+        LoadFormatChanged f ->
+            model
+
+        SaveFormatChanged f ->
+            model
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
