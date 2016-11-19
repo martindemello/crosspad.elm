@@ -20,6 +20,8 @@ type Msg
     = ClickSquare Int Int
     | KeyPress Char
     | KeyDown Key
+    | GridLostFocus
+    | GridGainedFocus
     | SetSymmetry Symmetry
     | ToggleDirection
     | UploadFile
@@ -39,4 +41,7 @@ type alias LoadFileRequest =
 
 
 type alias SaveFileRequest =
-    { data : String, format : String }
+    { filename_element : String
+    , data : String
+    , format : String
+    }

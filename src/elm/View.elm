@@ -5,7 +5,7 @@ import GridView exposing (svg_grid)
 import Types exposing (..)
 import Xword
 import Html exposing (..)
-import Html.Events exposing (onClick, onInput)
+import Html.Events exposing (onClick, onInput, onBlur, onFocus)
 import Html.Attributes exposing (..)
 import String
 import Kintail.InputWidget as InputWidget
@@ -111,7 +111,11 @@ toolbar model =
                     [ text "Convert to:"
                     , save_format_selector model
                     , text "Filename:"
-                    , input [ id "file-download" ] []
+                    , input
+                        [ id "file-download"
+                        , onFocus GridLostFocus
+                        ]
+                        []
                     , btn "Download" SaveFile
                     ]
                 ]
@@ -158,6 +162,40 @@ clue_box model =
 
 
 
+-- GRID --
+
+
+grid : Model -> Html Msg
+grid model =
+    let
+        s =
+            if model.grid_active then
+                [ ( "display", "inline-block" )
+                , ( "border-style", "solid" )
+                , ( "border-color", "#FF0000" )
+                , ( "border-width", "2px" )
+                , ( "padding", "2px" )
+                , ( "margin", "2px" )
+                ]
+            else
+                [ ( "display", "inline-block" )
+                , ( "border-color", "#FFFFFF" )
+                , ( "border-style", "solid" )
+                , ( "border-width", "2px" )
+                , ( "padding", "2px" )
+                , ( "margin", "2px" )
+                ]
+    in
+        div
+            [ onBlur GridLostFocus
+            , onFocus GridGainedFocus
+            , tabindex -1
+            , style s
+            ]
+            [ svg_grid model ]
+
+
+
 -- VIEW --
 
 
@@ -165,7 +203,7 @@ view : Model -> Html Msg
 view model =
     let
         g =
-            svg_grid model
+            grid model
 
         c =
             clue_box model

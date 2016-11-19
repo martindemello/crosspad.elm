@@ -20,6 +20,7 @@ type alias Model =
     , symmetry : Symmetry
     , load_format : String
     , save_format : String
+    , grid_active : Bool
     }
 
 
@@ -42,6 +43,7 @@ init dims =
         , symmetry = Symm180
         , load_format = hd load_formats
         , save_format = hd save_formats
+        , grid_active = True
         }
 
 
@@ -193,42 +195,52 @@ backspace_current model =
 
 
 handle_keycode k model =
-    case k of
-        ArrowLeft ->
-            move_cursor -1 0 model
+    if model.grid_active then
+        case k of
+            ArrowLeft ->
+                move_cursor -1 0 model
 
-        ArrowRight ->
-            move_cursor 1 0 model
+            ArrowRight ->
+                move_cursor 1 0 model
 
-        ArrowUp ->
-            move_cursor 0 -1 model
+            ArrowUp ->
+                move_cursor 0 -1 model
 
-        ArrowDown ->
-            move_cursor 0 1 model
+            ArrowDown ->
+                move_cursor 0 1 model
 
-        Space ->
-            toggle_black model |> update_numbers
+            Space ->
+                toggle_black model |> update_numbers
 
-        PageDown ->
-            toggle_dir model
+            PageDown ->
+                toggle_dir model
 
-        Delete ->
-            delete_current model
+            Delete ->
+                delete_current model
 
-        Backspace ->
-            backspace_current model
+            Backspace ->
+                backspace_current model
 
-        _ ->
-            model
+            _ ->
+                model
+    else
+        model
 
 
 handle_keypress c model =
-    if Char.isUpper (c) || Char.isLower (c) || Char.isDigit (c) then
-        update_letter c model
-            |> update_numbers
-            |> advance_cursor
+    if model.grid_active then
+        if Char.isUpper (c) || Char.isLower (c) || Char.isDigit (c) then
+            update_letter c model
+                |> update_numbers
+                |> advance_cursor
+        else
+            model
     else
         model
+
+
+set_grid_focus focused model =
+    { model | grid_active = focused }
 
 
 handle_symm symm model =

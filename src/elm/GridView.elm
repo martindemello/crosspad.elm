@@ -182,10 +182,10 @@ svg_grid model =
             toString top_left.y
 
         svg_h =
-            toString (h + 20) ++ "px"
+            toString (h + 1) ++ "px"
 
         svg_w =
-            toString (w + 20) ++ "px"
+            toString (w + 1) ++ "px"
 
         box =
             rect [ class grid_style, x x0_, y y0_, width w_, height h_ ] []

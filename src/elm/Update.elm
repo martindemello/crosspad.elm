@@ -19,6 +19,7 @@ save_file_request : Model -> SaveFileRequest
 save_file_request model =
     { data = Writer.to_json_string model.xw
     , format = model.save_format
+    , filename_element = "file-download"
     }
 
 
@@ -47,6 +48,12 @@ update_model msg model =
 
         KeyPress c ->
             handle_keypress c model
+
+        GridLostFocus ->
+            set_grid_focus False model
+
+        GridGainedFocus ->
+            set_grid_focus True model
 
         SetSymmetry s ->
             handle_symm s model

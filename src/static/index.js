@@ -30,14 +30,13 @@ var make_request = function (url, type, request, on_success) {
 }
 
 app.ports.fileSelected.subscribe(function (request) {
-  console.log(request);
   var node = document.getElementById(request.file_element);
   if (node === null) {
     return;
   }
-  
+
   var file = node.files[0];
-  
+
   var req = {
     'filedata': file,
     'from': request.format,
@@ -48,15 +47,20 @@ app.ports.fileSelected.subscribe(function (request) {
     var data = JSON.parse(response);
     app.ports.fileContentRead.send(data);
   };
-  
+
   var url = "http://localhost:1234/json";
   make_request(url, 'json', req, on_load);
 });
 
 
 app.ports.saveFileRequested.subscribe(function (request) {
-  console.log(request);
-  
+  var node = document.getElementById(request.filename_element);
+  if (node === null) {
+    return;
+  }
+
+  var filename = node.value;
+
   var req = {
     'filedata': request.data,
     'to': request.format,
@@ -65,9 +69,9 @@ app.ports.saveFileRequested.subscribe(function (request) {
 
   var on_load = function (response) {
     var blob = new Blob([response], {type: 'application/octet-stream'});
-    FileSaver.saveAs(blob, 'downloaded_xword');
+    FileSaver.saveAs(blob, filename);
   };
-  
+
   var url = "http://localhost:1234/blob";
   make_request(url, 'arraybuffer', req, on_load);
 });
