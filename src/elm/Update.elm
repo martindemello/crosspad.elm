@@ -1,5 +1,6 @@
 module Update exposing (..)
 
+import Cursor
 import Json.Decode exposing (Value)
 import Model exposing (..)
 import Ports exposing (..)
@@ -31,7 +32,11 @@ read_file f model =
     in
         case res of
             Ok xw_ ->
-                { model | xw = xw_, symmetry = GridLocked }
+                { model
+                    | xw = xw_
+                    , cursor = Cursor.init xw_
+                    , symmetry = GridLocked
+                }
 
             _ ->
                 model

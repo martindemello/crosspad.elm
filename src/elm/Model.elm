@@ -13,9 +13,7 @@ import Xword exposing (..)
 
 
 type alias Model =
-    { width : Int
-    , height : Int
-    , xw : Xword
+    { xw : Xword
     , cursor : Cursor
     , symmetry : Symmetry
     , load_format : String
@@ -36,9 +34,7 @@ init dims =
         hd xs =
             List.head xs |> Maybe.withDefault ""
     in
-        { width = dims.cols
-        , height = dims.rows
-        , xw = xw
+        { xw = xw
         , cursor = cursor
         , symmetry = Symm180
         , load_format = hd load_formats

@@ -152,9 +152,9 @@ cells model =
     List.concatMap
         (\y ->
             List.map (\x -> cell model x y)
-                (List.range 0 14)
+                (List.range 0 (model.xw.cols - 1))
         )
-        (List.range 0 14)
+        (List.range 0 (model.xw.rows - 1))
 
 
 svg_grid : Model -> Html Msg
@@ -164,10 +164,10 @@ svg_grid model =
             square_size
 
         w =
-            model.width * s
+            model.xw.cols * s
 
         h =
-            model.height * s
+            model.xw.rows * s
 
         w_ =
             toString w

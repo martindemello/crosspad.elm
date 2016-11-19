@@ -12,7 +12,7 @@ type alias Cursor =
     }
 
 
-init : { rows : Int, cols : Int } -> Cursor
+init : { a | rows : Int, cols : Int } -> Cursor
 init dims =
     { x = 0
     , y = 0
