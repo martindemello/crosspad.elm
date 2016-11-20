@@ -18,10 +18,10 @@ setting : Model -> String -> Symmetry -> Html Msg
 setting model value sym =
     let
         active =
-            "crosspadSettingsButtonActive"
+            "active"
 
         inactive =
-            "crosspadSettingsButtonInactive"
+            "inactive"
 
         c =
             if model.symmetry == sym then
@@ -30,7 +30,7 @@ setting model value sym =
                 inactive
 
         css =
-            "pure-button " ++ c
+            "pure-button crosspad-button-" ++ c
     in
         button [ class css, onClick (SetSymmetry sym) ]
             [ text value ]
@@ -62,11 +62,8 @@ dir_button model =
                 Down ->
                     "Down"
 
-        active =
-            "crosspadSettingsButtonActive"
-
         css =
-            "pure-button " ++ active
+            "pure-button crosspad-button-active"
     in
         button [ class css, onClick ToggleDirection ]
             [ text dir ]
@@ -96,7 +93,7 @@ toolbar : Model -> Html Msg
 toolbar model =
     let
         btn txt action =
-            Html.a [ class "pure-button crosspadToolbarButton", onClick action ]
+            Html.a [ class "pure-button crosspad-button-toolbar", onClick action ]
                 [ text txt ]
     in
         div [ style [ ( "display", "inline" ) ] ]
@@ -104,7 +101,12 @@ toolbar model =
                 [ fieldset []
                     [ text "Load as:"
                     , load_format_selector model
-                    , input [ id "file-upload", type_ "file", class "pure-button crosspadToolbarButton" ] []
+                    , input
+                        [ id "file-upload"
+                        , type_ "file"
+                        , class "crosspad-toolbar-input"
+                        ]
+                        []
                     , btn "Load" UploadFile
                     ]
                 , fieldset []
@@ -113,6 +115,7 @@ toolbar model =
                     , text "Filename:"
                     , input
                         [ id "file-download"
+                        , class "crosspad-toolbar-input"
                         , onFocus GridLostFocus
                         ]
                         []
@@ -168,29 +171,17 @@ clue_box model =
 grid : Model -> Html Msg
 grid model =
     let
-        s =
+        css =
             if model.grid_active then
-                [ ( "display", "inline-block" )
-                , ( "border-style", "solid" )
-                , ( "border-color", "#FF0000" )
-                , ( "border-width", "2px" )
-                , ( "padding", "2px" )
-                , ( "margin", "2px" )
-                ]
+                "crosspad-grid-border-active"
             else
-                [ ( "display", "inline-block" )
-                , ( "border-color", "#FFFFFF" )
-                , ( "border-style", "solid" )
-                , ( "border-width", "2px" )
-                , ( "padding", "2px" )
-                , ( "margin", "2px" )
-                ]
+                "crosspad-grid-border-inactive"
     in
         div
             [ onBlur GridLostFocus
             , onFocus GridGainedFocus
             , tabindex -1
-            , style s
+            , class css
             ]
             [ svg_grid model ]
 
@@ -221,12 +212,12 @@ view model =
             div [ class "pure-g" ]
     in
         div []
-            [ row [ div [ class "pure-u-2-3 crosspadStatusBarContainer" ] [ tb ] ]
+            [ row [ div [ class "pure-u-2-3 crosspad-statusbar-container" ] [ tb ] ]
             , row
-                [ div [ class "pure-u-1-3 crosspadGridContainer" ] [ g ]
-                , div [ class "pure-u-1-3 crosspadGridContainer" ] [ c ]
+                [ div [ class "pure-u-1-3 crosspad-grid-container" ] [ g ]
+                , div [ class "pure-u-1-3 crosspad-clue-container" ] [ c ]
                 ]
             , row
-                [ div [ class "pure-u-2-3 crosspadStatusBarContainer" ] [ set_sym, sb ]
+                [ div [ class "pure-u-2-3 crosspad-statusbar-container" ] [ set_sym, sb ]
                 ]
             ]

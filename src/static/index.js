@@ -1,6 +1,6 @@
 // pull in desired CSS/SASS files
 require('./styles/pure.css');
-require('./styles/styles.css');
+require('./styles/crosspad.scss');
 
 // js libraries
 var FileSaver = require('file-saver');

@@ -33,30 +33,6 @@ square_size =
     32
 
 
-grid_style =
-    "crosspadGrid"
-
-
-white_style =
-    "crosspadWhite"
-
-
-black_style =
-    "crosspadBlack"
-
-
-cwhite_style =
-    "crosspadCursorWhite"
-
-
-cblack_style =
-    "crosspadCursorBlack"
-
-
-square_style =
-    "crosspadSquare"
-
-
 cellstyle : Int -> Int -> Model -> String
 cellstyle x y model =
     let
@@ -68,16 +44,16 @@ cellstyle x y model =
     in
         case ( cell, is_cur ) of
             ( Black, False ) ->
-                black_style
+                "crosspad-black"
 
             ( Black, True ) ->
-                cblack_style
+                "crosspad-cursor-black"
 
             ( _, False ) ->
-                white_style
+                "crosspad-white"
 
             ( _, True ) ->
-                cwhite_style
+                "crosspad-cursor-white"
 
 
 cell model x_ y_ =
@@ -125,7 +101,7 @@ cell model x_ y_ =
             xw.grid
 
         cstyle =
-            square_style ++ " " ++ cellstyle x_ y_ model
+            "crosspad-square " ++ cellstyle x_ y_ model
 
         letter =
             get_letter x_ y_ grid
@@ -134,8 +110,8 @@ cell model x_ y_ =
             get_number x_ y_ grid
     in
         g []
-            [ text_ [ class "crosspadNumber", x num_x, y num_y ] [ text number ]
-            , text_ [ class "crosspadLetter", x let_x, y let_y ] [ text letter ]
+            [ text_ [ class "crosspad-number", x num_x, y num_y ] [ text number ]
+            , text_ [ class "crosspad-letter", x let_x, y let_y ] [ text letter ]
             , rect
                 [ class cstyle
                 , x cx
@@ -188,7 +164,7 @@ svg_grid model =
             toString (w + 1) ++ "px"
 
         box =
-            rect [ class grid_style, x x0_, y y0_, width w_, height h_ ] []
+            rect [ class "crosspad-grid", x x0_, y y0_, width w_, height h_ ] []
     in
         svg
             [ version "1.1", x "0", y "0", height svg_h, width svg_w ]
