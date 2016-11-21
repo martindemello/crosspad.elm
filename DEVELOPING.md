@@ -5,8 +5,4 @@ To start the local webserver, run
 $ npm start
 ````
 
-Editing `MyCss.elm` requires the static css file to be regenerated via
-````
-$ npm install -g elm-css
-$ elm-css src/elm/Stylesheets.elm -o src/static/styles/
-````
+Loading and saving rely on [pangrid](https://github.com/martindemello/pangrid) running in webserver mode as a backend.
