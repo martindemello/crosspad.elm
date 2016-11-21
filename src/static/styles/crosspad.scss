@@ -3,6 +3,12 @@ body {
     min-width: 800px;
 }
 
+@mixin box-sizing {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
 .crosspad-grid {
     fill: rgb(255,255,255);
     stroke-width: 1;
@@ -12,53 +18,53 @@ body {
 .crosspad-grid-container {
     padding: 0;
     margin: 10px;
-    border-color: rgba(0, 0, 0, 0.5);
-    border: 2px;
+    display: inline-block;
+    vertical-align: top;
 }
 
 .crosspad-grid-border {
-  display: inline-block;
-  border-style: solid;
-  border-width: 2px;
-  padding: 2px;
-  margin: 2px;
-  padding-bottom: 0px;
+    display: inline-block;
+    border-style: solid;
+    border-width: 2px;
+    padding: 2px;
+    margin: 2px;
+    padding-bottom: 0px;
 }
 
 .crosspad-grid-border-active {
-  @extend .crosspad-grid-border;
-  border-color: #FF0000;
+    @extend .crosspad-grid-border;
+    border-color: #FF0000;
 }
 
 .crosspad-grid-border-inactive {
-  @extend .crosspad-grid-border;
-  border-color: #FFFFFF;
+    @extend .crosspad-grid-border;
+    border-color: #FFFFFF;
 }
 
 .crosspad-square {
     margin: 0;
     padding: 0;
     stroke-width: 1;
-    stroke: rgb(128,128,128);
+    stroke: rgb(0, 0, 0);
 }
 
 .crosspad-black {
-    fill: rgb(0,0,0);
+    fill: rgb(0, 0, 0);
     fill-opacity: 1;
 }
 
 .crosspad-white {
-    fill: rgb(255,255,255);
+    fill: rgb(255, 255, 255);
     fill-opacity: 0;
 }
 
 .crosspad-cursor-black {
-    fill: rgb(0,0,128);
+    fill: rgb(0, 0, 128);
     fill-opacity: 0.5;
 }
 
 .crosspad-cursor-white {
-    fill: rgb(128,128,255);
+    fill: rgb(128, 128, 255);
     fill-opacity: 0.5;
 }
 
@@ -78,59 +84,84 @@ body {
     padding: 0;
     margin: 10px;
     border-color: rgba(0, 0, 0, 0.5);
-    border: 2px;
+    border: 1px;
+    border-style: inset;
+    background-color: rgb(240, 240, 240);
+    resize: horizontal;
+    display: inline-block;
+}
+
+.crosspad-clue-textbox {
+    @include box-sizing;
+    width: 100%;
+    resize: none;
+}
+
+.crosspad-clue-label {
+    display: block;
+    background-color: rgb(240, 240, 240);
 }
 
 $button-border: rgb(61, 146, 201);
 
 .crosspad-toolbar-item {
-  margin-left: 2px;
-  margin-right: 2px;
+    margin-left: 2px;
+    margin-right: 2px;
 }
 
 .crosspad-button {
-  @extend .crosspad-toolbar-item;
-  padding: 2px;
-  border: 2px;
-  border-style: solid;
-  border-color: $button-border;
+    @extend .crosspad-toolbar-item;
+    padding: 2px;
+    border: 2px;
+    border-style: solid;
+    border-color: $button-border;
 }
 
 .crosspad-button-active {
-  @extend .crosspad-button;
-  background-color: rgba(61, 146, 201, 0.8);
+    @extend .crosspad-button;
+    background-color: rgba(61, 146, 201, 0.8);
 }
 
 .crosspad-button-inactive {
-  @extend .crosspad-button;
-  background-color: rgba(61, 146, 201, 0.1);
+    @extend .crosspad-button;
+    background-color: rgba(61, 146, 201, 0.1);
 }
 
 .crosspad-button-toolbar {
-  @extend .crosspad-button;
-  background-color: rgba(61, 146, 201, 0.1);
+    @extend .crosspad-button;
+    background-color: rgba(61, 146, 201, 0.1);
 }
 
 .crosspad-toolbar-input {
-  @extend .crosspad-toolbar-item;
-  padding: 0px;
-  border: 2px;
-  border-style: solid;
-  border-color: $button-border;
+    @extend .crosspad-toolbar-item;
+    padding: 0px;
+    border: 2px;
+    border-style: solid;
+    border-color: $button-border;
 }
 
 .crosspad-status-label {
-    margin: 2px;
-    padding: 2px;
+    margin-right: 4px;
+    margin-left: 4px;
+    padding-left: 2px;
+}
+
+.crosspad-status-group {
+    border-left: 1px;
+    border-left-style: inset;
+    margin-right: 4px;
+    margin-left: 4px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    padding-left: 2px;
+    height: 100%;
+}
+
+.crosspad-statusbar {
     display: inline;
-    border: 2px;
-    border-style: solid;
-    border-color: rgb(61, 146, 201);
-    background-color: rgba(192, 255, 192, 1);
 }
 
 .crosspad-statusbar-container {
     background-color: rgb(240, 240, 240);
     display: inline;
 }
-

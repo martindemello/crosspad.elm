@@ -17,17 +17,11 @@ import Kintail.InputWidget as InputWidget
 setting : Model -> String -> Symmetry -> Html Msg
 setting model value sym =
     let
-        active =
-            "active"
-
-        inactive =
-            "inactive"
-
         c =
             if model.symmetry == sym then
-                active
+                "active"
             else
-                inactive
+                "inactive"
 
         css =
             "pure-button crosspad-button-" ++ c
@@ -42,7 +36,7 @@ grid_settings model =
         btn =
             setting model
     in
-        div [ style [ ( "display", "inline" ) ] ]
+        span []
             [ label [ class "pure-label" ] [ text "Symmetry: " ]
             , btn "None" SymmNone
             , btn "180" Symm180
@@ -69,11 +63,19 @@ dir_button model =
             [ text dir ]
 
 
+direction_settings : Model -> Html Msg
+direction_settings model =
+    span [ class "crosspad-status-group" ]
+        [ label [ class "pure-label crosspad-status-label" ] [ text "Direction: " ]
+        , dir_button model
+        ]
+
+
 status_bar : Model -> Html Msg
 status_bar model =
-    div [ style [ ( "display", "inline" ) ] ]
-        [ label [ class "pure-label", style [ ( "margin-left", "4px" ) ] ] [ text "Direction: " ]
-        , dir_button model
+    div [ class "crosspad-statusbar" ]
+        [ grid_settings model
+        , direction_settings model
         ]
 
 
@@ -151,12 +153,12 @@ clue_box model =
             format clues.down
 
         txt str =
-            textarea [ cols 65, rows 12, readonly True, value str ] []
+            textarea [ class "crosspad-clue-textbox", cols 65, rows 12, readonly True, value str ] []
 
         lbl str =
-            label [ style [ ( "display", "block" ) ] ] [ text str ]
+            label [ class "crosspad-clue-label" ] [ text str ]
     in
-        div []
+        div [ class "crosspad-clue-textbox" ]
             [ lbl "Across"
             , txt ac
             , lbl "Down"
@@ -202,9 +204,6 @@ view model =
         sb =
             status_bar model
 
-        set_sym =
-            grid_settings model
-
         tb =
             toolbar model
 
@@ -212,12 +211,12 @@ view model =
             div [ class "pure-g" ]
     in
         div []
-            [ row [ div [ class "pure-u-2-3 crosspad-statusbar-container" ] [ tb ] ]
-            , row
-                [ div [ class "pure-u-1-3 crosspad-grid-container" ] [ g ]
-                , div [ class "pure-u-1-3 crosspad-clue-container" ] [ c ]
+            [ row [ div [ class "pure-u-1 crosspad-statusbar-container" ] [ tb ] ]
+            , div [ style [ ( "display", "inline-block" ) ] ]
+                [ span [ class "crosspad-grid-container" ] [ g ]
+                , span [ class "crosspad-clue-container" ] [ c ]
                 ]
             , row
-                [ div [ class "pure-u-2-3 crosspad-statusbar-container" ] [ set_sym, sb ]
+                [ div [ class "pure-u-1 crosspad-statusbar-container" ] [ sb ]
                 ]
             ]
