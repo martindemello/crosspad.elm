@@ -1,7 +1,7 @@
 module Model exposing (..)
 
-import Array2D
 import Char exposing (..)
+import Set exposing (Set)
 import String exposing (..)
 import Cursor exposing (Cursor)
 import Keycode exposing (..)
@@ -15,6 +15,7 @@ import Xword exposing (..)
 type alias Model =
     { xw : Xword
     , cursor : Cursor
+    , current_word : Set ( Int, Int )
     , symmetry : Symmetry
     , load_format : String
     , save_format : String
@@ -36,11 +37,14 @@ init dims =
     in
         { xw = xw
         , cursor = cursor
+        , current_word = Set.empty
         , symmetry = Symm180
         , load_format = hd load_formats
         , save_format = hd save_formats
         , grid_active = True
         }
+            |> update_numbers
+            |> update_current_word
 
 
 load_formats : List String
@@ -99,6 +103,7 @@ update_letter c model =
 
 update_cursor f model =
     { model | cursor = f model.cursor }
+        |> update_current_word
 
 
 move_cursor dx dy model =
@@ -115,6 +120,22 @@ retreat_cursor model =
 
 set_cursor x y model =
     update_cursor (Cursor.set x y) model
+
+
+update_current_word model =
+    let
+        collect move cursor set =
+            if is_boundary cursor.x cursor.y model.xw then
+                set
+            else
+                collect move (move cursor) (Set.insert ( cursor.x, cursor.y ) set)
+
+        set =
+            Set.empty
+                |> collect (Cursor.advance_nowrap) model.cursor
+                |> collect (Cursor.retreat_nowrap) model.cursor
+    in
+        { model | current_word = set }
 
 
 toggle_black : Model -> Model
@@ -160,7 +181,7 @@ toggle_black model =
         xw_ =
             { xw | grid = grid_ }
     in
-        { model | xw = xw_ } |> advance_cursor
+        { model | xw = xw_ } |> update_all
 
 
 update_numbers : Model -> Model
@@ -170,6 +191,11 @@ update_numbers model =
             model.xw |> renumber
     in
         { model | xw = xw_ }
+
+
+update_all : Model -> Model
+update_all model =
+    model |> update_numbers |> update_current_word
 
 
 toggle_dir : Model -> Model
@@ -195,18 +221,25 @@ handle_keycode k model =
         case k of
             ArrowLeft ->
                 move_cursor -1 0 model
+                    |> update_cursor (Cursor.set_dir Across)
 
             ArrowRight ->
                 move_cursor 1 0 model
+                    |> update_cursor (Cursor.set_dir Across)
 
             ArrowUp ->
                 move_cursor 0 -1 model
+                    |> update_cursor (Cursor.set_dir Down)
 
             ArrowDown ->
                 move_cursor 0 1 model
+                    |> update_cursor (Cursor.set_dir Down)
 
             Space ->
-                toggle_black model |> update_numbers
+                toggle_black model |> advance_cursor
+
+            PageUp ->
+                toggle_dir model
 
             PageDown ->
                 toggle_dir model

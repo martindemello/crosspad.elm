@@ -1,7 +1,9 @@
 module GridView exposing (svg_grid)
 
+import Set
 import Model exposing (..)
 import Types exposing (..)
+import Utils exposing (..)
 import Xword exposing (..)
 import Svg.Attributes
     exposing
@@ -40,22 +42,24 @@ cellstyle x y model =
             get_cell x y model.xw.grid
 
         is_cur =
-            model.cursor.x == x && model.cursor.y == y
+            (model.cursor.x == x && model.cursor.y == y)
+
+        is_word =
+            (not is_cur) && (Set.member ( x, y ) model.current_word)
+
+        bg =
+            when (cell == Black) "black" "white"
+
+        cursor =
+            when is_cur "cursor-" ""
     in
-        case ( cell, is_cur ) of
-            ( Black, False ) ->
-                "crosspad-black"
-
-            ( Black, True ) ->
-                "crosspad-cursor-black"
-
-            ( _, False ) ->
-                "crosspad-white"
-
-            ( _, True ) ->
-                "crosspad-cursor-white"
+        if is_word then
+            "crosspad-word"
+        else
+            "crosspad-" ++ cursor ++ bg
 
 
+cell : Model -> Int -> Int -> Svg Msg
 cell model x_ y_ =
     let
         s =
@@ -124,6 +128,7 @@ cell model x_ y_ =
             ]
 
 
+cells : Model -> List (Svg Msg)
 cells model =
     List.concatMap
         (\y ->

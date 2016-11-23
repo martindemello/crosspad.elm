@@ -1,6 +1,7 @@
 module Cursor exposing (..)
 
 import Types exposing (..)
+import Utils exposing (..)
 
 
 type alias Cursor =
@@ -22,19 +23,25 @@ init dims =
     }
 
 
+set_dir : Direction -> Cursor -> Cursor
+set_dir direction cursor =
+    { cursor | dir = direction }
+
+
 toggle_dir : Cursor -> Cursor
 toggle_dir cursor =
     let
         dir_ =
-            if cursor.dir == Across then
-                Down
-            else
-                Across
+            when (cursor.dir == Across) Down Across
     in
         { cursor | dir = dir_ }
 
 
-move : Int -> Int -> Cursor -> Cursor
+type alias Move =
+    Int -> Int -> Cursor -> Cursor
+
+
+move : Move
 move dx dy cursor =
     let
         x_ =
@@ -46,24 +53,56 @@ move dx dy cursor =
         { cursor | x = x_, y = y_ }
 
 
-advance : Cursor -> Cursor
-advance cursor =
+move_nowrap : Move
+move_nowrap dx dy cursor =
+    let
+        x_ =
+            cursor.x + dx
+
+        y_ =
+            cursor.y + dy
+    in
+        { cursor | x = x_, y = y_ }
+
+
+advance_ : Move -> Cursor -> Cursor
+advance_ move_fn cursor =
     case cursor.dir of
         Across ->
-            move 1 0 cursor
+            move_fn 1 0 cursor
 
         Down ->
-            move 0 1 cursor
+            move_fn 0 1 cursor
+
+
+advance : Cursor -> Cursor
+advance cursor =
+    advance_ move cursor
+
+
+advance_nowrap : Cursor -> Cursor
+advance_nowrap cursor =
+    advance_ move_nowrap cursor
+
+
+retreat_ : Move -> Cursor -> Cursor
+retreat_ move_fn cursor =
+    case cursor.dir of
+        Across ->
+            move_fn -1 0 cursor
+
+        Down ->
+            move_fn 0 -1 cursor
 
 
 retreat : Cursor -> Cursor
 retreat cursor =
-    case cursor.dir of
-        Across ->
-            move -1 0 cursor
+    retreat_ move cursor
 
-        Down ->
-            move 0 -1 cursor
+
+retreat_nowrap : Cursor -> Cursor
+retreat_nowrap cursor =
+    retreat_ move_nowrap cursor
 
 
 set : Int -> Int -> Cursor -> Cursor
