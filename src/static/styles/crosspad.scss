@@ -1,25 +1,77 @@
-body {
-    overflow-x: auto;
-    min-width: 800px;
-}
-
 @mixin box-sizing {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
 
-.crosspad-grid {
-    fill: rgb(255,255,255);
-    stroke-width: 1;
-    stroke: rgb(128,128,128);
+@mixin flex {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+}
+
+html, body {
+    min-width: 800px;
+    height: 98vh;
+    font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+}
+
+#main {
+    height: 100%;
+}
+
+#view-main {
+    height: 100%;
+    display: flex;
+    flex-flow: column;
+}
+
+.crosspad-main {
+    display: flex;
+    height: inherit;
+    max-height: 80%;
 }
 
 .crosspad-grid-container {
     padding: 0;
     margin: 10px;
-    display: inline-block;
     vertical-align: top;
+    flex: 1;
+}
+
+.crosspad-clues-container {
+    padding: 2px;
+    margin: 10px;
+    border-color: rgba(0, 0, 0, 0.5);
+    border: 1px;
+    border-style: inset;
+    background-color: rgb(240, 240, 240);
+    flex: 2;
+
+    display: flex;
+    flex-flow: column;
+}
+
+.crosspad-statusbar-container {
+    background-color: rgb(240, 240, 240);
+}
+
+.crosspad-statusbar-top {
+    @extend .crosspad-statusbar-container;
+    margin-bottom: auto;
+}
+
+.crosspad-statusbar-bottom {
+    @extend .crosspad-statusbar-container;
+    margin-top: auto;
+}
+
+.crosspad-grid {
+    fill: rgb(255,255,255);
+    stroke-width: 1;
+    stroke: rgb(128,128,128);
 }
 
 .crosspad-grid-border {
@@ -85,26 +137,45 @@ body {
     text-anchor: middle;
 }
 
-.crosspad-clue-container {
+.crosspad-clue-section {
+    flex: auto;
+    overflow: scroll;
+    margin: 0;
     padding: 0;
-    margin: 10px;
-    border-color: rgba(0, 0, 0, 0.5);
-    border: 1px;
-    border-style: inset;
-    background-color: rgb(240, 240, 240);
-    resize: horizontal;
-    display: inline-block;
 }
 
-.crosspad-clue-textbox {
+.crosspad-clue-box {
     @include box-sizing;
-    width: 100%;
     resize: none;
+
+    display: flex;
+    flex-direction: column;
 }
 
 .crosspad-clue-label {
-    display: block;
-    background-color: rgb(240, 240, 240);
+    background-color: rgb(240, 240, 255);
+    height: 1.25em;
+    margin: 0;
+}
+
+.crosspad-clue-list {
+    list-style-type: none;
+    background-color: white;
+    margin: 0;
+    padding: 0;
+}
+
+.crosspad-clue-number {
+    display: table-cell;
+    padding-right: 0.625rem;
+}
+
+.crosspad-clue-text {
+    display: table-cell;
+}
+
+.crosspad-clue-current {
+    background-color: rgba(61, 146, 201, 0.4);
 }
 
 $button-border: rgb(61, 146, 201);
@@ -112,6 +183,7 @@ $button-border: rgb(61, 146, 201);
 .crosspad-toolbar-item {
     margin-left: 2px;
     margin-right: 2px;
+    font: 1.1em Arial;
 }
 
 .crosspad-button {
@@ -145,10 +217,19 @@ $button-border: rgb(61, 146, 201);
     border-color: $button-border;
 }
 
+.crosspad-toolbar-combo {
+    @extend .crosspad-toolbar-item;
+    padding: 0px;
+    border: 2px;
+    border-style: solid;
+    border-color: $button-border;
+}
+
 .crosspad-status-label {
     margin-right: 4px;
     margin-left: 4px;
     padding-left: 2px;
+    padding-right: 2px;
 }
 
 .crosspad-status-group {
@@ -163,10 +244,5 @@ $button-border: rgb(61, 146, 201);
 }
 
 .crosspad-statusbar {
-    display: inline;
-}
-
-.crosspad-statusbar-container {
-    background-color: rgb(240, 240, 240);
     display: inline;
 }

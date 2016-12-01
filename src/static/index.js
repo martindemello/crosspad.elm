@@ -1,5 +1,4 @@
 // pull in desired CSS/SASS files
-require('./styles/pure.css');
 require('./styles/crosspad.scss');
 
 // js libraries

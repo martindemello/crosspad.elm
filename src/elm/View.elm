@@ -3,11 +3,11 @@ module View exposing (view)
 import Model exposing (..)
 import GridView exposing (svg_grid)
 import Types exposing (..)
+import Utils exposing (..)
 import Xword
 import Html exposing (..)
 import Html.Events exposing (onClick, onInput, onBlur, onFocus)
 import Html.Attributes exposing (..)
-import String
 import Kintail.InputWidget as InputWidget
 
 
@@ -24,7 +24,7 @@ setting model value sym =
                 "inactive"
 
         css =
-            "pure-button crosspad-button-" ++ c
+            "crosspad-button-" ++ c
     in
         button [ class css, onClick (SetSymmetry sym) ]
             [ text value ]
@@ -37,7 +37,7 @@ grid_settings model =
             setting model
     in
         span []
-            [ label [ class "pure-label" ] [ text "Symmetry: " ]
+            [ label [ class "crosspad-status-label" ] [ text "Symmetry: " ]
             , btn "None" SymmNone
             , btn "180" Symm180
             , btn "90" Symm90
@@ -57,7 +57,7 @@ dir_button model =
                     "Down"
 
         css =
-            "pure-button crosspad-button-active"
+            "crosspad-button-active"
     in
         button [ class css, onClick ToggleDirection ]
             [ text dir ]
@@ -66,7 +66,7 @@ dir_button model =
 direction_settings : Model -> Html Msg
 direction_settings model =
     span [ class "crosspad-status-group" ]
-        [ label [ class "pure-label crosspad-status-label" ] [ text "Direction: " ]
+        [ label [ class "crosspad-status-label" ] [ text "Direction: " ]
         , dir_button model
         ]
 
@@ -81,13 +81,13 @@ status_bar model =
 
 load_format_selector : Model -> Html Msg
 load_format_selector model =
-    InputWidget.comboBox [] identity Model.load_formats model.load_format
+    InputWidget.comboBox [ class "crosspad-toolbar-combo" ] identity Model.load_formats model.load_format
         |> Html.map LoadFormatChanged
 
 
 save_format_selector : Model -> Html Msg
 save_format_selector model =
-    InputWidget.comboBox [] identity Model.save_formats model.save_format
+    InputWidget.comboBox [ class "crosspad-toolbar-combo" ] identity Model.save_formats model.save_format
         |> Html.map SaveFormatChanged
 
 
@@ -95,13 +95,13 @@ toolbar : Model -> Html Msg
 toolbar model =
     let
         btn txt action =
-            Html.a [ class "pure-button crosspad-button-toolbar", onClick action ]
+            Html.a [ class "crosspad-button-toolbar", onClick action ]
                 [ text txt ]
     in
         div [ style [ ( "display", "inline" ) ] ]
-            [ Html.form [ class "pure-form", id "convert-form" ]
+            [ Html.form [ id "convert-form" ]
                 [ fieldset []
-                    [ text "Load as:"
+                    [ label [ class "crosspad-status-label" ] [ text "Load as:" ]
                     , load_format_selector model
                     , input
                         [ id "file-upload"
@@ -112,7 +112,7 @@ toolbar model =
                     , btn "Load" UploadFile
                     ]
                 , fieldset []
-                    [ text "Convert to:"
+                    [ label [ class "crosspad-status-label" ] [ text "Convert to:" ]
                     , save_format_selector model
                     , text "Filename:"
                     , input
@@ -131,38 +131,42 @@ toolbar model =
 -- CLUES --
 
 
+clue : Direction -> Int -> ( Int, String ) -> Html Msg
+clue dir current ( n, c ) =
+    let
+        cls =
+            when (n == current) [ class "crosspad-clue-current" ] []
+
+        css =
+            [ onClick (SetCurrentClue dir n) ] ++ cls
+    in
+        li css
+            [ div [ class "crosspad-clue-number" ]
+                [ text (toString n) ]
+            , div [ class "crosspad-clue-text" ]
+                [ text c ]
+            ]
+
+
 clue_box : Model -> Html Msg
 clue_box model =
     let
-        lines =
-            String.join "\n"
-
-        merge ( x, y ) =
-            (toString x) ++ ". " ++ y
-
-        format c =
-            lines <| List.map merge c
-
         clues =
             Xword.clue_list model.xw
 
-        ac =
-            format clues.across
-
-        dn =
-            format clues.down
-
-        txt str =
-            textarea [ class "crosspad-clue-textbox", cols 65, rows 12, readonly True, value str ] []
+        list dir current cs =
+            div [ class "crosspad-clue-section" ]
+                [ ul [ class "crosspad-clue-list" ] (List.map (clue dir current) cs)
+                ]
 
         lbl str =
-            label [ class "crosspad-clue-label" ] [ text str ]
+            p [ class "crosspad-clue-label" ] [ text str ]
     in
-        div [ class "crosspad-clue-textbox" ]
+        div [ class "crosspad-clues-container" ]
             [ lbl "Across"
-            , txt ac
+            , list Across model.current_ac clues.across
             , lbl "Down"
-            , txt dn
+            , list Down model.current_dn clues.down
             ]
 
 
@@ -198,7 +202,7 @@ view model =
         g =
             grid model
 
-        c =
+        clues =
             clue_box model
 
         sb =
@@ -206,17 +210,12 @@ view model =
 
         tb =
             toolbar model
-
-        row =
-            div [ class "pure-g" ]
     in
-        div []
-            [ row [ div [ class "pure-u-1 crosspad-statusbar-container" ] [ tb ] ]
-            , div [ style [ ( "display", "inline-block" ) ] ]
-                [ span [ class "crosspad-grid-container" ] [ g ]
-                , span [ class "crosspad-clue-container" ] [ c ]
+        div [ id "view-main" ]
+            [ div [ class "crosspad-statusbar-top" ] [ tb ]
+            , div [ class "crosspad-main" ]
+                [ div [ class "crosspad-grid-container" ] [ g ]
+                , clues
                 ]
-            , row
-                [ div [ class "pure-u-1 crosspad-statusbar-container" ] [ sb ]
-                ]
+            , div [ class "crosspad-statusbar-bottom" ] [ sb ]
             ]
