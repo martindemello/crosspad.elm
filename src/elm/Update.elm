@@ -37,6 +37,7 @@ read_file f model =
                     , cursor = Cursor.init xw_
                     , symmetry = GridLocked
                 }
+                    |> update_all
 
             _ ->
                 model
@@ -83,6 +84,12 @@ update_model msg model =
 
         SaveFormatChanged f ->
             handle_save_format_changed f model
+
+        SetCurrentClue Across n ->
+            set_current_across_clue n model
+
+        SetCurrentClue Down n ->
+            set_current_down_clue n model
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )

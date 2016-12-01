@@ -16,6 +16,8 @@ type alias Model =
     { xw : Xword
     , cursor : Cursor
     , current_word : Set ( Int, Int )
+    , current_ac : Int
+    , current_dn : Int
     , symmetry : Symmetry
     , load_format : String
     , save_format : String
@@ -38,6 +40,8 @@ init dims =
         { xw = xw
         , cursor = cursor
         , current_word = Set.empty
+        , current_ac = 1
+        , current_dn = 1
         , symmetry = Symm180
         , load_format = hd load_formats
         , save_format = hd save_formats
@@ -282,3 +286,11 @@ handle_load_format_changed fmt model =
 
 handle_save_format_changed fmt model =
     { model | save_format = fmt }
+
+
+set_current_across_clue n model =
+    { model | current_ac = n }
+
+
+set_current_down_clue n model =
+    { model | current_dn = n }

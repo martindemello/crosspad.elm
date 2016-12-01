@@ -30,6 +30,7 @@ type Msg
     | FileConverted String
     | LoadFormatChanged String
     | SaveFormatChanged String
+    | SetCurrentClue Direction Int
 
 
 type alias FileReaderPortData =
